@@ -9,6 +9,7 @@ const sinchClientParams: SinchClientParameters = {
   keySecret: process.env.SINCH_KEY_SECRET,
   applicationKey: process.env.SINCH_APP_KEY,
   applicationSecret: process.env.SINCH_APP_SECRET,
+  smsRegion: process.env.SINCH_SMS_REGION,
 };
 
 export const getSinchClient = () => new SinchClient(sinchClientParams);

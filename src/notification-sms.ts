@@ -3,7 +3,11 @@ import {
   reportVerificationByIdentity,
   startVerification,
 } from "./utility/phone-number-verification";
-import { getBatchSms, sendTextSms } from "./utility/sms";
+import {
+  getBatchDelivertReport,
+  getBatchSms,
+  sendTextSms,
+} from "./utility/sms";
 import {
   BatchMessageGetRequestFastify,
   SendSmsPostRequestFastify,
@@ -69,6 +73,24 @@ export const handleGetBatchSms = async (req: BatchMessageGetRequestFastify) => {
     const { batchId, number } = req.body;
     const sinchClient = getSinchClient();
     const getBatchSmsResponse = await getBatchSms(batchId, sinchClient);
+
+    return getBatchSmsResponse;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const handleGetBatchDeliveryReport = async (
+  req: BatchMessageGetRequestFastify
+) => {
+  try {
+    const { batchId, number } = req.body;
+    const sinchClient = getSinchClient();
+    const getBatchSmsResponse = await getBatchDelivertReport(
+      batchId,
+      sinchClient
+    );
 
     return getBatchSmsResponse;
   } catch (error) {
