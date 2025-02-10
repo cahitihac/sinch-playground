@@ -1,4 +1,4 @@
-import { SinchClient, Verification } from "@sinch/sdk-core";
+import { RequestFailedError, SinchClient, Verification } from "@sinch/sdk-core";
 
 export const startVerification = async (
   phoneNumber: string,
@@ -36,6 +36,16 @@ export const reportVerificationByIdentity = async (
 
     return reportVerificationByIdentityResponse;
   } catch (error) {
+    if (error instanceof RequestFailedError) {
+      const { statusCode, data } = error;
+      const { message } = JSON.parse(data?.toString() || "");
+
+      if (statusCode === 400 && message.includes("Invalid identity or code")) {
+        throw new Error(
+          `Could not report verification for identity ${identity}. ${message}`
+        );
+      }
+    }
     throw new Error(`Could not report verification for identity ${identity}`);
   }
 };
