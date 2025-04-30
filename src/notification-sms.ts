@@ -21,7 +21,7 @@ export const handleStartVerification = async (
 ) => {
   try {
     const { number } = req.body;
-    const sinchClient = getSinchClient();
+    const sinchClient = getSinchClient(number);
     const startVerificationResponse = await startVerification(
       number,
       sinchClient
@@ -43,7 +43,7 @@ export const handleReportVerification = async (
       throw new Error("Either id or identity must be provided");
     }
 
-    const sinchClient = getSinchClient();
+    const sinchClient = getSinchClient(identity);
     const reportVerificationResponse = await reportVerificationByIdentity(
       identity,
       code,
@@ -59,7 +59,7 @@ export const handleReportVerification = async (
 export const handleSendSms = async (req: SendSmsPostRequestFastify) => {
   try {
     const { to, from, body } = req.body;
-    const sinchClient = getSinchClient();
+    const sinchClient = getSinchClient(to[0]);
     const sendSmsResponse = await sendTextSms(from, to, body, sinchClient);
     return sendSmsResponse;
   } catch (error) {
@@ -71,7 +71,7 @@ export const handleSendSms = async (req: SendSmsPostRequestFastify) => {
 export const handleGetBatchSms = async (req: BatchMessageGetRequestFastify) => {
   try {
     const { batchId, number } = req.body;
-    const sinchClient = getSinchClient();
+    const sinchClient = getSinchClient(number);
     const getBatchSmsResponse = await getBatchSms(batchId, sinchClient);
 
     return getBatchSmsResponse;
@@ -86,7 +86,7 @@ export const handleGetBatchDeliveryReport = async (
 ) => {
   try {
     const { batchId, number } = req.body;
-    const sinchClient = getSinchClient();
+    const sinchClient = getSinchClient(number);
     const getBatchSmsResponse = await getBatchDelivertReport(
       batchId,
       sinchClient

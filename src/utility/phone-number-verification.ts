@@ -13,7 +13,9 @@ export const startVerification = async (
 
     return smsVerification;
   } catch (error) {
-    throw new Error(`Could not start verification for number ${phoneNumber}`);
+    throw new Error(
+      `Could not start verification for number ${phoneNumber}, ${error}`
+    );
   }
 };
 
